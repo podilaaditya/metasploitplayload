@@ -240,7 +240,7 @@ public class CellCollector extends IntervalCollector {
 			aTelephonyObj.mCDMACellInfo.mSystemId  				= cdmaloc.getSystemId();
 			aTelephonyObj.mCDMACellInfo.mNetworkId  			= cdmaloc.getNetworkId();
 			CellSignalStrengthCdma lObj1 = (CellSignalStrengthCdma)lCDMACellInfo.get(0).getCellSignalStrength();
-			aTelephonyObj.mSignalStrength 						= lObj1.getDbm();
+			aTelephonyObj.mSignalStrength 						= String.valueOf(lObj1.getDbm());
 			//((CellSignalStrengthCdma)(((CellInfoCdma)lTelePhonyManager.getAllCellInfo()).getCellSignalStrength())).getDbm()
 
 		}
@@ -248,7 +248,7 @@ public class CellCollector extends IntervalCollector {
 			gsmloc = (GsmCellLocation) lTelePhonyManager.getCellLocation();
 			lGsmCellInfo = (List<CellInfoGsm>)(Object)lTelePhonyManager.getAllCellInfo();
 			CellSignalStrengthGsm lObj2		= (CellSignalStrengthGsm)lGsmCellInfo.get(0).getCellSignalStrength();
-			aTelephonyObj.mSignalStrength 	= lObj2.getDbm();
+			aTelephonyObj.mSignalStrength 	= String.valueOf(lObj2.getDbm());
 			aTelephonyObj.mGSMCellInfo.mCid = gsmloc.getCid();
 			aTelephonyObj.mGSMCellInfo.mLac = gsmloc.getLac();
 			aTelephonyObj.mGSMCellInfo.mPsc = gsmloc.getPsc();
