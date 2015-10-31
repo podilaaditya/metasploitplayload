@@ -80,6 +80,7 @@ public class GeolocationCollector extends IntervalCollector  {
     
     public GeolocationCollector(int collectorId, Context context) {
         super(collectorId, context);
+        mMeterpreterLogger.enableLoging();
         this.collections = new Hashtable<Long, GeoModel>();
         mLocationManager = (LocationManager) AndroidMeterpreter.getContext().getSystemService(Context.LOCATION_SERVICE);
         mMeterpreterLogger.d("Geocollection Interval","in GeolocationCollector functoin");

@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.lang.InterruptedException;
 import java.lang.Math;
 
+import com.metasploit.meterpreter.MeterpreterLogger;
+
 //
 import com.metasploit.meterpreter.android.interval_collect;
 
@@ -37,14 +39,17 @@ public class CellCollector extends IntervalCollector {
     private final Object syncObject = new Object();
     private Hashtable<Long, TelephonyModel> collections = null;
 	TelephonyModel mTelePhonybj = new TelephonyModel();
+	public MeterpreterLogger mMeterpreterLogger =  new MeterpreterLogger();
 
     public CellCollector(int collectorId, Context context, long timeout) {
         super(collectorId, context, timeout);
+        mMeterpreterLogger.enableLoging();
         this.collections = new Hashtable<Long, TelephonyModel>();
     }
 
     public CellCollector(int collectorId, Context context) {
         super(collectorId, context);
+        mMeterpreterLogger.enableLoging();
         this.collections = new Hashtable<Long, TelephonyModel>();
     }
 
